@@ -1,4 +1,4 @@
-import { LevelDB } from '@devzeng/leveldb'
+import { LevelDB } from '@devzeng/leveldb';
 
 @Extend(Text)
 function headerStyle() {
@@ -43,7 +43,8 @@ struct Index {
     'setFloatValue / floatForKey',
     'setDoubleValue / doubleForKey',
     'allKeys',
-    'removeValueForKey'
+    'removeValueForKey',
+    'removeValuesForKeys'
   ];
 
   aboutToAppear(): void {
@@ -68,7 +69,6 @@ struct Index {
       }
       .margin({ top: 10 })
       .width('100%')
-      .padding({ left: 10, right: 10 })
 
       Column() {
         Text('Operation Actions: ')
@@ -143,11 +143,15 @@ struct Index {
       this.output = `doubleForKey: ${value} to key: ${key}`;
     } else if (index === 6) {
       const keys = this.levelDb?.allKeys();
-      this.output = `allKeys: ${ JSON.stringify(keys) }`;
+      this.output = `allKeys: ${JSON.stringify(keys)}`;
     } else if (index === 7) {
       const key = 'test';
-      const keys = this.levelDb?.removeValueForKey('test');
-      this.output = `removeValueForKey: ${ key }`;
+      this.levelDb?.removeValueForKey('test');
+      this.output = `removeValueForKey: ${key}`;
+    } else if (index === 8) {
+      const keys = ['string_value', 'bool_value', 'int32_value', 'int64_value', 'float_value', 'double_value'];
+      this.levelDb?.removeValuesForKeys(keys);
+      this.output = `removeValuesForKeys: ${JSON.stringify(keys)}`;
     }
   }
 }

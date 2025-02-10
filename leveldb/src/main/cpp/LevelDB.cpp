@@ -9,9 +9,7 @@
 #include "leveldb/db.h"
 #include "leveldb/write_batch.h"
 
-LevelDB::LevelDB() : _db(nullptr) {
-    
-}
+LevelDB::LevelDB() : _db(nullptr) {}
 
 LevelDB::~LevelDB() {
     Close();
@@ -120,7 +118,7 @@ bool LevelDB::FromSlice(const leveldb::Slice& slice, ValueType& value) {
                 return false;
         }
         return true;
-    } catch (...) {
+    } catch (const std::exception&) {
         return false;
     }
 }
