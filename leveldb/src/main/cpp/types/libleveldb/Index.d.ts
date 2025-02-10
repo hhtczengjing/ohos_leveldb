@@ -1,0 +1,17 @@
+export const open: (path: string) => number;
+export const close: (ptr: number) => void;
+export const allKeys: (ptr: number) => string[];
+export const removeValueForKey: (ptr: number, key: string) => void;
+export const removeValuesForKeys: (ptr: number, keys: string[]) => void;
+export const stringForKey: (ptr: number, key: string) => string;
+export const boolForKey: (ptr: number, key: string) => boolean;
+export const int32ForKey: (ptr: number, key: string) => number;
+export const int64ForKey: (ptr: number, key: string) => number;
+export const floatForKey: (ptr: number, key: string) => number;
+export const doubleForKey: (ptr: number, key: string) => number;
+export const setStringValue: (ptr: number, key: string, value: string) => void;
+export const setBoolValue: (ptr: number, key: string, value: boolean) => void;
+export const setInt32Value: (ptr: number, key: string, value: number) => void;
+export const setInt64Value: (ptr: number, key: string, value: number) => void;
+export const setFloatValue: (ptr: number, key: string, value: number) => void;
+export const setDoubleValue: (ptr: number, key: string, value: number) => void;
