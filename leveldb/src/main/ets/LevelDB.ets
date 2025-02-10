@@ -56,6 +56,7 @@ export class LevelDB {
   floatForKey(key: string): number {
     return levelDb.floatForKey(this.dbPtr, key);
   }
+
   doubleForKey(key: string): number {
     return levelDb.doubleForKey(this.dbPtr, key);
   }

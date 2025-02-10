@@ -112,6 +112,7 @@ struct Index {
   private actionHandler(index: number): void {
     if (index === 0) {
       const key = 'string_value';
+      this.levelDb?.setStringValue('test', 'hello world');
       this.levelDb?.setStringValue(key, 'test');
       const value = this.levelDb?.stringForKey(key);
       this.output = `stringForKey: ${value} to key: ${key}`;

@@ -6,8 +6,8 @@
   "repository": "https://github.com/hhtczengjing/ohos_leveldb.git",
   "homepage": "https://github.com/Tencent/ohos_leveldb",
   "keywords": [ "leveldb", "key-value", "storage", "db" ],
-  "author": "",
-  "license": "Apache-2.0",
+  "author": "zengjing <hhtczengjing@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "libleveldb.so": "file:./src/main/cpp/types/libleveldb"
   }
