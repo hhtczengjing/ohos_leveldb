@@ -1,1 +1,1 @@
-export { LevelDB } from './src/main/ets/LevelDB'
+export { LevelDB } from './src/main/ets/LevelDB';

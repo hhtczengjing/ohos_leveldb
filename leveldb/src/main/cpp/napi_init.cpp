@@ -176,7 +176,7 @@ static napi_value StringArrayToNValue(napi_env env, const std::vector<std::strin
 static napi_value open(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     std::string path = NValueToString(env, args[0]);
     
@@ -192,7 +192,7 @@ static napi_value open(napi_env env, napi_callback_info info) {
 static napi_value close(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -209,7 +209,7 @@ static napi_value close(napi_env env, napi_callback_info info) {
 static napi_value allKeys(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -225,7 +225,7 @@ static napi_value allKeys(napi_env env, napi_callback_info info) {
 static napi_value removeValueForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -242,7 +242,7 @@ static napi_value removeValueForKey(napi_env env, napi_callback_info info) {
 static napi_value removeValuesForKeys(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -259,7 +259,7 @@ static napi_value removeValuesForKeys(napi_env env, napi_callback_info info) {
 static napi_value stringForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -268,18 +268,18 @@ static napi_value stringForKey(napi_env env, napi_callback_info info) {
     }
     
     std::string key = NValueToString(env, args[1]);
-    ValueType value(std::string(""));
+    std::string value;
     if (!_db->Get(key, value)) {
         return NAPIUndefined(env);
     }
-    return StringToNValue(env, value.getString());
+    return StringToNValue(env, value);
 }
 
 // export const boolForKey: (ptr: number, key: string) => boolean;
 static napi_value boolForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -288,18 +288,18 @@ static napi_value boolForKey(napi_env env, napi_callback_info info) {
     }
     
     std::string key = NValueToString(env, args[1]);
-    ValueType value(bool(false));
+    bool value;
     if (!_db->Get(key, value)) {
         return NAPIUndefined(env);
     }
-    return BoolToNValue(env, value.getBool());
+    return BoolToNValue(env, value);
 }
 
 // export const int32ForKey: (ptr: number, key: string) => number;
 static napi_value int32ForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -308,18 +308,38 @@ static napi_value int32ForKey(napi_env env, napi_callback_info info) {
     }
     
     std::string key = NValueToString(env, args[1]);
-    ValueType value(int32_t(0));
+    int32_t value;
     if (!_db->Get(key, value)) {
         return NAPIUndefined(env);
     }
-    return Int32ToNValue(env, value.getInt32());
+    return Int32ToNValue(env, value);
+}
+
+// export const uint32ForKey: (ptr: number, key: string) => number;
+static napi_value uint32ForKey(napi_env env, napi_callback_info info) {
+    size_t argc = 2;
+    napi_value args[2] = {nullptr};
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
+    
+    int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
+    LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
+    if (!_db) {
+        return NAPIUndefined(env);
+    }
+    
+    std::string key = NValueToString(env, args[1]);
+    uint32_t value;
+    if (!_db->Get(key, value)) {
+        return NAPIUndefined(env);
+    }
+    return UInt32ToNValue(env, value);
 }
 
 // export const int64ForKey: (ptr: number, key: string) => number;
 static napi_value int64ForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -328,18 +348,38 @@ static napi_value int64ForKey(napi_env env, napi_callback_info info) {
     }
     
     std::string key = NValueToString(env, args[1]);
-    ValueType value(int64_t(0));
+    int64_t value;
     if (!_db->Get(key, value)) {
         return NAPIUndefined(env);
     }
-    return Int64ToNValue(env,value.getInt64());
+    return Int64ToNValue(env,value);
+}
+
+// export const uint64ForKey: (ptr: number, key: string) => number;
+static napi_value uint64ForKey(napi_env env, napi_callback_info info) {
+    size_t argc = 2;
+    napi_value args[2] = {nullptr};
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
+    
+    int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
+    LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
+    if (!_db) {
+        return NAPIUndefined(env);
+    }
+    
+    std::string key = NValueToString(env, args[1]);
+    uint64_t value;
+    if (!_db->Get(key, value)) {
+        return NAPIUndefined(env);
+    }
+    return UInt64ToNValue(env,value);
 }
 
 // export const floatForKey: (ptr: number, key: string) => number;
 static napi_value floatForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -348,18 +388,18 @@ static napi_value floatForKey(napi_env env, napi_callback_info info) {
     }
     
     std::string key = NValueToString(env, args[1]);
-    ValueType value(float(0));
+    float value;
     if (!_db->Get(key, value)) {
         return NAPIUndefined(env);
     }
-    return DoubleToNValue(env, value.getFloat());
+    return DoubleToNValue(env, value);
 }
 
 // export const doubleForKey: (ptr: number, key: string) => number;
 static napi_value doubleForKey(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -368,18 +408,18 @@ static napi_value doubleForKey(napi_env env, napi_callback_info info) {
     }
     
     std::string key = NValueToString(env, args[1]);
-    ValueType value(double(0));
+    double value;
     if (!_db->Get(key, value)) {
         return NAPIUndefined(env);
     }
-    return DoubleToNValue(env, value.getDouble());
+    return DoubleToNValue(env, value);
 }
 
 // export const setStringValue: (ptr: number, key: string, value: string) => void;
 static napi_value setStringValue(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -389,7 +429,7 @@ static napi_value setStringValue(napi_env env, napi_callback_info info) {
     
     std::string key = NValueToString(env, args[1]);
     std::string value = NValueToString(env, args[2]);
-    _db->Put(key, ValueType(std::string(value)));
+    _db->Put(key,value);
     return NAPIUndefined(env);
 }
 
@@ -397,7 +437,7 @@ static napi_value setStringValue(napi_env env, napi_callback_info info) {
 static napi_value setBoolValue(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -407,7 +447,7 @@ static napi_value setBoolValue(napi_env env, napi_callback_info info) {
     
     std::string key = NValueToString(env, args[1]);
     bool value = NValueToBool(env, args[2]);
-    _db->Put(key, ValueType(bool(value)));
+    _db->Put(key, value);
     return NAPIUndefined(env);
 }
 
@@ -415,7 +455,7 @@ static napi_value setBoolValue(napi_env env, napi_callback_info info) {
 static napi_value setInt32Value(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -425,7 +465,25 @@ static napi_value setInt32Value(napi_env env, napi_callback_info info) {
     
     std::string key = NValueToString(env, args[1]);
     int32_t value = NValueToInt32(env, args[2]);
-    _db->Put(key, ValueType(int32_t(value)));
+    _db->Put(key, static_cast<int32_t>(value));
+    return NAPIUndefined(env);
+}
+
+// export const setUInt32Value: (ptr: number, key: string, value: number) => void;
+static napi_value setUInt32Value(napi_env env, napi_callback_info info) {
+    size_t argc = 3;
+    napi_value args[3] = {nullptr};
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
+    
+    int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
+    LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
+    if (!_db) {
+        return NAPIUndefined(env);
+    }
+    
+    std::string key = NValueToString(env, args[1]);
+    uint32_t value = NValueToUInt32(env, args[2]);
+    _db->Put(key, static_cast<uint32_t>(value));
     return NAPIUndefined(env);
 }
 
@@ -433,7 +491,7 @@ static napi_value setInt32Value(napi_env env, napi_callback_info info) {
 static napi_value setInt64Value(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -443,7 +501,25 @@ static napi_value setInt64Value(napi_env env, napi_callback_info info) {
     
     std::string key = NValueToString(env, args[1]);
     int64_t value = NValueToInt64(env, args[2]);
-    _db->Put(key, ValueType(int64_t(value)));
+    _db->Put(key, static_cast<int64_t>(value));
+    return NAPIUndefined(env);
+}
+
+// export const setUInt64Value: (ptr: number, key: string, value: number) => void;
+static napi_value setUInt64Value(napi_env env, napi_callback_info info) {
+    size_t argc = 3;
+    napi_value args[3] = {nullptr};
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
+    
+    int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
+    LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
+    if (!_db) {
+        return NAPIUndefined(env);
+    }
+    
+    std::string key = NValueToString(env, args[1]);
+    uint64_t value = NValueToUInt64(env, args[2]);
+    _db->Put(key, static_cast<uint64_t>(value));
     return NAPIUndefined(env);
 }
 
@@ -451,7 +527,7 @@ static napi_value setInt64Value(napi_env env, napi_callback_info info) {
 static napi_value setFloatValue(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -461,7 +537,7 @@ static napi_value setFloatValue(napi_env env, napi_callback_info info) {
     
     std::string key = NValueToString(env, args[1]);
     float value = NValueToDouble(env, args[2]);
-    _db->Put(key, ValueType(float(value)));
+    _db->Put(key, static_cast<float>(value));
     return NAPIUndefined(env);
 }
 
@@ -469,7 +545,7 @@ static napi_value setFloatValue(napi_env env, napi_callback_info info) {
 static napi_value setDoubleValue(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_CALL(napi_get_cb_info(env, info, &argc, args, nullptr, nullptr));
     
     int64_t _db_instance_ptr = NValueToInt64(env, args[0]);
     LevelDB* _db = reinterpret_cast<LevelDB*>(_db_instance_ptr);
@@ -479,7 +555,7 @@ static napi_value setDoubleValue(napi_env env, napi_callback_info info) {
     
     std::string key = NValueToString(env, args[1]);
     double value = NValueToDouble(env, args[2]);
-    _db->Put(key, ValueType(double(value)));
+    _db->Put(key, value);
     return NAPIUndefined(env);
 }
 
@@ -495,12 +571,16 @@ static napi_value Init(napi_env env, napi_value exports) {
         { "boolForKey", nullptr, boolForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "int32ForKey", nullptr, int32ForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "int64ForKey", nullptr, int64ForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "uint32ForKey", nullptr, uint32ForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "uint64ForKey", nullptr, uint64ForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "floatForKey", nullptr, floatForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "doubleForKey", nullptr, doubleForKey, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setStringValue", nullptr, setStringValue, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setBoolValue", nullptr, setBoolValue, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setInt32Value", nullptr, setInt32Value, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setInt64Value", nullptr, setInt64Value, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "setUInt32Value", nullptr, setUInt32Value, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "setUInt64Value", nullptr, setUInt64Value, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setFloatValue", nullptr, setFloatValue, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setDoubleValue", nullptr, setDoubleValue, nullptr, nullptr, nullptr, napi_default, nullptr },
     };

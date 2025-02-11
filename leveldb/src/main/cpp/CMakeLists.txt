@@ -2,6 +2,8 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(leveldb)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(NATIVERENDER_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 # 日志打印配置

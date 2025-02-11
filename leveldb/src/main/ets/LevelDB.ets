@@ -49,8 +49,16 @@ export class LevelDB {
     return levelDb.int32ForKey(this.dbPtr, key);
   }
 
-  int64ForKey(key: string): number {
+  uint32ForKey(key: string): number {
+    return levelDb.uint32ForKey(this.dbPtr, key);
+  }
+
+  int64ForKey(key: string): bigint {
     return levelDb.int64ForKey(this.dbPtr, key);
+  }
+
+  uint64ForKey(key: string): bigint {
+    return levelDb.uint64ForKey(this.dbPtr, key);
   }
 
   floatForKey(key: string): number {
@@ -73,8 +81,16 @@ export class LevelDB {
     levelDb.setInt32Value(this.dbPtr, key, value);
   }
 
-  setInt64Value(key: string, value: number) {
+  setUInt32Value(key: string, value: number) {
+    levelDb.setUInt32Value(this.dbPtr, key, value);
+  }
+
+  setInt64Value(key: string, value: bigint) {
     levelDb.setInt64Value(this.dbPtr, key, value);
+  }
+
+  setUInt64Value(key: string, value: bigint) {
+    levelDb.setUInt64Value(this.dbPtr, key, value);
   }
 
   setFloatValue(key: string, value: number) {
