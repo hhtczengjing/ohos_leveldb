@@ -1,10 +1,10 @@
 {
   "name": "@devzeng/leveldb",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Google LevelDB for HarmonyOS.",
   "main": "Index.ets",
   "repository": "https://github.com/hhtczengjing/ohos_leveldb.git",
-  "homepage": "https://github.com/Tencent/ohos_leveldb",
+  "homepage": "https://github.com/hhtczengjing/ohos_leveldb",
   "keywords": [ "leveldb", "key-value", "storage", "db" ],
   "author": "zengjing <hhtczengjing@gmail.com>",
   "license": "MIT",

@@ -17,11 +17,16 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 const path = getContext(this).getApplicationContext().filesDir + '/data.ldb';
 const levelDb = new LevelDB(path);
 
-// 读写数据
-const key = 'string_value';
-levelDb.setStringValue(key, 'test');
-const value = levelDb.stringForKey(key);
-console.log(`stringForKey: ${value} to key: ${key}`);
+// 读写数据(支持string、number、boolean等基础数据类型)
+levelDb.setStringValue('string_value', 'test');
+const value = levelDb.stringForKey('string_value');
+
+// 删除数据
+levelDb.removeValueForKey('key1');
+levelDb.removeValuesForKeys(['key1', 'key2']);
+
+// 遍历数据
+const allKeys = levelDb.allKeys();
 
 // 关闭数据库
 levelDb.close();

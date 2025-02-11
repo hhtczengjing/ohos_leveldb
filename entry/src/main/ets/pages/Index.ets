@@ -39,7 +39,9 @@ struct Index {
     'setStringValue / stringForKey',
     'setBoolValue / boolForKey',
     'setInt32Value / int32ForKey',
+    'setUInt32Value / uint32ForKey',
     'setInt64Value / int64ForKey',
+    'setUInt64Value / uint64ForKey',
     'setFloatValue / floatForKey',
     'setDoubleValue / doubleForKey',
     'allKeys',
@@ -123,32 +125,42 @@ struct Index {
       this.output = `boolForKey: ${value} to key: ${key}`;
     } else if (index === 2) {
       const key = 'int32_value';
-      this.levelDb?.setInt32Value(key, 1);
+      this.levelDb?.setInt32Value(key, -1);
       const value = this.levelDb?.int32ForKey(key);
       this.output = `int32ForKey: ${value} to key: ${key}`;
     } else if (index === 3) {
+      const key = 'uint32_value';
+      this.levelDb?.setUInt32Value(key, 2);
+      const value = this.levelDb?.uint32ForKey(key);
+      this.output = `uint32ForKey: ${value} to key: ${key}`;
+    } else if (index === 4) {
       const key = 'int64_value';
-      this.levelDb?.setInt64Value(key, Date.now());
+      this.levelDb?.setInt64Value(key, BigInt(-Date.now()));
       const value = this.levelDb?.int64ForKey(key);
       this.output = `int64ForKey: ${value} to key: ${key}`;
-    } else if (index === 4) {
-      const key = 'float_value';
-      this.levelDb?.setFloatValue(key, 1.0);
-      const value = this.levelDb?.floatForKey(key);
-      this.output = `floatForKey: ${value} to key: ${key}`;
     } else if (index === 5) {
+      const key = 'uint64_value';
+      this.levelDb?.setUInt64Value(key, BigInt(Date.now()));
+      const value = this.levelDb?.uint64ForKey(key);
+      this.output = `uint64ForKey: ${value} to key: ${key}`;
+    } else if (index === 6) {
+      const key = 'float_value';
+      this.levelDb?.setFloatValue(key, 1.01);
+      const value = this.levelDb?.floatForKey(key);
+      this.output = `floatForKey: ${value?.toFixed(2)} to key: ${key}`;
+    } else if (index === 7) {
       const key = 'double_value';
-      this.levelDb?.setDoubleValue(key, 2.0);
+      this.levelDb?.setDoubleValue(key, 3.14159);
       const value = this.levelDb?.doubleForKey(key);
       this.output = `doubleForKey: ${value} to key: ${key}`;
-    } else if (index === 6) {
+    } else if (index === 8) {
       const keys = this.levelDb?.allKeys();
       this.output = `allKeys: ${JSON.stringify(keys)}`;
-    } else if (index === 7) {
+    } else if (index === 9) {
       const key = 'test';
       this.levelDb?.removeValueForKey('test');
       this.output = `removeValueForKey: ${key}`;
-    } else if (index === 8) {
+    } else if (index === 10) {
       const keys = ['string_value', 'bool_value', 'int32_value', 'int64_value', 'float_value', 'double_value'];
       this.levelDb?.removeValuesForKeys(keys);
       this.output = `removeValuesForKeys: ${JSON.stringify(keys)}`;
